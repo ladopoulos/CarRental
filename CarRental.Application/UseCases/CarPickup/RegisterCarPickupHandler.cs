@@ -1,4 +1,5 @@
 ﻿using CarRental.Domain.Entities;
+using CarRental.Domain.Errors;
 using CarRental.Infrastructure.Persistence.Repositories;
 using FluentResults;
 using MediatR;
@@ -10,6 +11,12 @@ public class RegisterCarReturnHandler(ICarRentalRepository repository)
 {
     public async Task<Result> Handle(RegisterCarPickupCommand request, CancellationToken cancellationToken)
     {
+        //todo:write unit tests
+        //todo: ensure that the car is available
+        var existingRental = await repository.GetByBookingNumber(request.BookingNumber);
+        if (existingRental != null)
+            return Result.Fail(new DuplicateError($"Booking number '{request.BookingNumber}' already in use"));
+
         var rental = Rental.Create(request.BookingNumber, request.RegistrationNumber, request.CustomerSsn,
             request.CarCategory, request.PickupDateTime, request.PickupMeterReading);
 

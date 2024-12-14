@@ -26,16 +26,25 @@ public class CarRentalController : ControllerBase
 
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CarPickup([FromBody] RegisterCarPickupCommand command)
     {
-        await _mediator.Send(command);
+        var result = await _mediator.Send(command);
+
+        if (result.IsFailed)
+        {
+            return HandleFailure(result.Errors);
+        }
 
         return Ok();
     }
 
 
     [HttpPost("return/{bookingNumber}", Name = "CarReturn")]
-    public async Task<ActionResult<Rental>> CarReturn([FromRoute] string bookingNumber,
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> CarReturn([FromRoute] string bookingNumber,
         [FromBody] CarReturnDto carReturnDto)
     {
         //todo: add input validation
@@ -52,6 +61,7 @@ public class CarRentalController : ControllerBase
     }
 
     [HttpGet("{bookingNumber}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<Rental>> GetCarRentalByBookingNumber([FromRoute] string bookingNumber)
     {
@@ -66,8 +76,11 @@ public class CarRentalController : ControllerBase
 
     private ObjectResult HandleFailure(List<IError> errors)
     {
+        //todo: tests   
         if (errors.Any(x => x is NotFoundError))
             return StatusCode(StatusCodes.Status404NotFound, errors);
+        if (errors.Any(x => x is DuplicateError))
+            return StatusCode(StatusCodes.Status409Conflict, errors);
         else
         {
             return StatusCode(StatusCodes.Status500InternalServerError, errors);

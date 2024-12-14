@@ -17,7 +17,6 @@ public class CarRentalDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Rental>()
-            .HasKey(r => r.Id);
+        modelBuilder.ApplyConfiguration(new RentalConfiguration());
     }
 }

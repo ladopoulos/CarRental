@@ -3,19 +3,26 @@
 ## Overview
 The CarRental System is designed to manage car rentals, including booking, returning, and calculating rental prices based on car categories. 
 
-The solution is built using C# and targets .NET 8.
-This project implements a car rental system using ASP.NET Core Web API with MediatR for implementing the CQRS pattern.
-
 ## Architecture
-This project follows Clean Architecture principles:
+This project follows Clean Architecture principles and uses the CQRS pattern. The solution is divided into:
+
 - Domain layer contains business logic
 - Application layer handles use cases
 - Infrastructure layer for data access and external services
-- API layer provides RESTful endpoints
+- API layer is the entry point to our system, and provides REST endpoints
 
 The solution is not yet complete:
 - UI is missing
+- Validations are missing
 - Extensive testing needs to be implemented
+- Actual data storage is missing
+
+## Technologies
+- .NET 8
+- mediatR
+- Entity Framework Core
+- FluentResults
+- EF Core in-memory database
 
 ## Getting Started
 ### Prerequisites
@@ -23,18 +30,28 @@ The solution is not yet complete:
 - Visual Studio 2022 or later
 
 ## Usage
+1. Clone the repository
+2. Open the solution in Visual Studio 
+3. Run the project (F5)
+4. The API will be available at `https://localhost:5089`
+
 To explore the API and its functionality:
-- Use Swagger UI at `/swagger/index.html`
+- Use Swagger UI at `https://localhost:5089/swagger/index.html`
 
 ## API Endpoints
 
-### Car Categories
-- GET /api/categories - Get all car categories
-- POST /api/categories - Create a new car category
-
 ### Rentals
-- GET /api/rentals - Get all rentals
+
 - POST /api/rentals - Book a car
-- GET /api/rentals/{id} - Get details of a specific rental
-- PUT /api/rentals/{id} - Update a rental
-- DELETE /api/rentals/{id} - Cancel a rental
+- POST /api/rentals/{bookingNumber}/CarReturn -  Return a car
+- GET /api/rentals/{bookingNumber} - Get details of a specific rental by booking number
+
+
+## Discussion Points
+- Prices are hard coded based on car categories. How to handle price configuration changes.
+- How to handle car availability and booking conflicts.
+- How to handle concurrent bookings for the same car.
+
+
+
+
