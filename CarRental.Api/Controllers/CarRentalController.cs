@@ -41,7 +41,7 @@ public class CarRentalController : ControllerBase
     }
 
 
-    [HttpPost("return/{bookingNumber}", Name = "CarReturn")]
+    [HttpPost("{bookingNumber}/return", Name = "CarReturn")]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> CarReturn([FromRoute] string bookingNumber,

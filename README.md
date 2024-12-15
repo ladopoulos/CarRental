@@ -9,7 +9,7 @@ This project follows Clean Architecture principles and uses the CQRS pattern. Th
 - Domain layer contains business logic
 - Application layer handles use cases
 - Infrastructure layer for data access and external services
-- API layer is the entry point to our system, and provides REST endpoints
+- API layer is the entry point to our system, and provides REST API endpoints
 
 The solution is not yet complete:
 - UI is missing
@@ -42,10 +42,9 @@ To explore the API and its functionality:
 
 ### Rentals
 
-- POST /api/rentals - Book a car
-- POST /api/rentals/{bookingNumber}/CarReturn -  Return a car
-- GET /api/rentals/{bookingNumber} - Get details of a specific rental by booking number
-
+- POST /api/carRental - Book a car
+- POST /api/carRental/{bookingNumber}/return -  Return a car
+- GET /api/carRental/{bookingNumber} - Get details of a specific rental by booking number
 
 ## Discussion Points
 - Prices are hard coded based on car categories. How to handle price configuration changes.
